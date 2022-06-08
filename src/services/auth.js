@@ -19,7 +19,12 @@ class Auth {
                   data: { token: this.generateToken(user) },
                 })
               )
-              .catch((err) => reject({ status: 500, message: error }));
+              .catch((err) => {
+                if (err.keyPattern?.email == 1) {
+                  err = { message: "Email ALready Exists" };
+                }
+                reject({ status: 500, message: err });
+              });
           }
         });
       } catch (error) {
